@@ -1,6 +1,4 @@
-import numpy as np
-from continued_fractions_basics import ordering
-from extremal_continued_fractions import minimize_continued_fraction, maximize_continued_fraction
+from continued_fractions_toolbox.extremal_continued_fractions import minimize_continued_fraction, maximize_continued_fraction
 from tqdm import tqdm
 
 #assuming alphabet is a set of letters (1 character)
@@ -15,6 +13,8 @@ def presence(transition,added_letter,word):
             return False
     else:
         return False
+    
+
     
 def simplify_forbidden_transitions(forbidden_transition,alphabet):
     forbidden_transition = set(forbidden_transition)
@@ -50,10 +50,6 @@ def simplify_forbidden_transitions(forbidden_transition,alphabet):
     return forbidden_transition_simplified
 
 
-        
-            
-
-
 def gauss_cantor_forbidden_words(ordered_alphabet, forbidden_transition, n):
     if n==1:
         return [[letter] for letter in ordered_alphabet[::-1]]
@@ -61,7 +57,7 @@ def gauss_cantor_forbidden_words(ordered_alphabet, forbidden_transition, n):
     else:
         N = len(ordered_alphabet)
         C_prev = gauss_cantor_forbidden_words(ordered_alphabet, forbidden_transition, n-1)
-        C_next = N*C_prev
+        C_next = N*C_prev #initializing list with a large enough size, it will be shortened later
 
         if n%2==0:
             using_alphabet = ordered_alphabet
@@ -81,7 +77,7 @@ def gauss_cantor_forbidden_words(ordered_alphabet, forbidden_transition, n):
                     C_next[index] = [letter] + word
                     index = index+1
                 
-        C_next = C_next[:index]
+        C_next = C_next[:index]               
         return C_next
     
 def list_to_string(L):

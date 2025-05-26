@@ -1,14 +1,20 @@
 import numpy as np
-from continued_fractions_basics import cont_frac_to_real
+from continued_fractions_toolbox.continued_fractions_basics import cont_frac_to_real
 
 def C(N,n):
+    r"""Generating the n first coefficients of words of the Bernoulli-Cantor set with aphabet {1, ... , N}
+        PARAMETERS
+            N: integer, size of the alphabet
+            n: integer, size of the words
+        RETURNS
+            list of list of integers"""
     base = np.array([[i] for i in range(1,N+1)])
     list_if_even = range(1,N+1)
     list_if_odd  = range(N,0,-1)
     if n==0:
         return base
     
-    else:
+    else: #recursive algorithm
         C_prev = C(N,n-1)
         C_next = np.zeros((N**(n+1),n+1))
         incr = 0
@@ -23,14 +29,21 @@ def C(N,n):
                 C_next[N*incr + i] = new_element
             incr = incr+1
 
-        return C_next
+        return list(C_next)
     
 
     
 def segments_cantor(N,n,k):
+    r"""Computing the bounds of the segments of the Bernoulli-Cantor set with alphabet {1, ..., N} associated to words of length n
+        PARAMETERS
+            N: integer, size of the alphabet
+            n: integer, size of the words
+            k: integer, size of the suffixes
+        RETURNS
+            list of list of floats"""
 
     cantor_step = C(N,n)
-    segments_list = np.zeros((N**(n+1),2))
+    segments_list = list(np.zeros((N**(n+1),2)))
 
     #creating suffixes to have more precisions
 
@@ -50,12 +63,12 @@ def segments_cantor(N,n,k):
     for i in range(N**(n+1)):
         element = cantor_step[i]
 
-        coeff_begin = np.concatenate((element,suffix_begin))
-        coeff_final = np.concatenate((element,suffix_final))
+        coeff_begin = element + suffix_begin
+        coeff_final = element + suffix_final
 
         segment_begin = cont_frac_to_real(coeff_begin)
         segment_final = cont_frac_to_real(coeff_final)
 
-        segments_list[i] = np.array([segment_begin,segment_final])
+        segments_list[i] = [segment_begin,segment_final]
 
     return segments_list

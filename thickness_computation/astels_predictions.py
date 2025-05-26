@@ -1,6 +1,7 @@
 import numpy as np
 
 def theoretical_thickness(N):
+    r"""Compute the thickness predicted by Astels formula for Bernoulli-Cantor set with alphabet {1, ... , N}"""
     delta = (-N + np.sqrt(N**2 + 4*N))/2
 
     thickness = np.infty

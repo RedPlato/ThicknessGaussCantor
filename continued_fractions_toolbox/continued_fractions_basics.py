@@ -3,20 +3,20 @@ import numpy as np
 def real_to_cont_frac(x,n):
     if n==0:
         coeff = int(x)
-        return np.array([coeff])
+        return [coeff]
     
     else:
         first_coeff = int(x)
 
-        if first_coeff == x:                #ie x is an integer at this step
-            other_coeffs = np.zeros(n-1)    #then the following coefficients are null
+        if first_coeff == x:                      #ie x is an integer at this step
+            other_coeffs = list(np.zeros(n-1))    #then the following coefficients are null
         else:
             other_coeffs = real_to_cont_frac(1/(x-first_coeff),n-1)
 
-        return np.concatenate((np.array([first_coeff]), other_coeffs))
+        return [first_coeff] + other_coeffs
     
 def cont_frac_to_real(coeffs):
-    if coeffs.size==1:
+    if len(coeffs)==1:
         return coeffs[0]
     
     else:
